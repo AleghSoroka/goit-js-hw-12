@@ -24,7 +24,7 @@
   -webkit-text-size-adjust: 100%;
 
   --indent: 12px;
-  --items: 4;
+  --items: 3;
 }
 
 .user_request_form{
@@ -116,8 +116,18 @@ input {
   background-color: #6C8CFF;
 }
 
+.is-hidden {
+  display: none;
+  opacity: 0;
+}
+
+.load_more {
+  display: block;
+  margin: 0 auto;
+}
+
 .loader {
-  visibility: hidden;
+  visibility:visible;
   width: 48px;
   height: 48px;
   border: 3px dotted #FFF;
