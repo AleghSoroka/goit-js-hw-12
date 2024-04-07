@@ -85,7 +85,7 @@ async function onRequestSubmit(event) {
   }
 
   lightbox.refresh();
-  event.target.reset();
+  // event.target.reset();
 }
 
 
