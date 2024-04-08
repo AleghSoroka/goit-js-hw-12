@@ -15,7 +15,7 @@ export async function getImages(userRequest, currentPage) {
         safesearch: 'true',
     };
     
-    const url = `${BASE_URL}${END_POINT}?${params}`;
+    const url = `${BASE_URL}${END_POINT}`;
     
     const res = await axios.get(url, { params });
     console.log("totalHits: ", res.data.totalHits);
