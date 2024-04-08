@@ -133,10 +133,11 @@ input {
   border: 3px dotted #FFF;
   border-style: solid solid dotted dotted;
   border-radius: 50%;
-  display: inline-block;
+  display: block;
   position: relative;
   box-sizing: border-box;
   animation: rotation 2s linear infinite;
+  margin: 0 auto;
 }
 #elem-to-center {
   position: absolute;
