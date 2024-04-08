@@ -117,11 +117,11 @@ async function onLoadMoreClick() {
 
   if (currentPage >= totalPages) { 
     iziToast.error({
-        backgroundColor: 'red',
+        backgroundColor: 'white',
         icon: false,
         progressBar: false,
         close: false,
-        position: 'topRight',
+        position: 'center',
         message:
           "We're sorry, but you've reached the end of search results.",
       });
