@@ -36,15 +36,7 @@ async function onRequestSubmit(event) {
     .replaceAll('++', '+');
 
   if (!userRequestStr) {
-    iziToast.error({
-      backgroundColor: 'red',
-      icon: false,
-      progressBar: false,
-      close: false,
-      position: 'topRight',
-      message: 'Please, input a valid request!',
-    });
-    hideLoader();
+    errorHandler('Please, input a valid request!');
     return;
   } else {
     try {
@@ -55,30 +47,11 @@ async function onRequestSubmit(event) {
         loadMoreBtnVisibility();
       }
       else {
-        hideLoader();
-        loadMoreBtnVisibility();
-        gallery.innerHTML = '';
-        iziToast.error({
-          backgroundColor: 'red',
-          icon: false,
-          progressBar: false,
-          close: false,
-          position: 'topRight',
-          message: 'There are no images matching Your request!',
-        });
-      }
+        errorHandler('There are no images matching your request!');
+            }
     } catch (error) {
-      hideLoader();
-      gallery.innerHTML = '';
-      iziToast.error({
-        backgroundColor: 'red',
-        icon: false,
-        progressBar: false,
-        close: false,
-        position: 'topRight',
-        message:
-          'Something went wrong during your request. Please, try again later!',
-      });
+      errorHandler('Something went wrong during your request. Please, try again later!')
+      console.log(error);
     }
     
     hideLoader();
@@ -88,15 +61,27 @@ async function onRequestSubmit(event) {
   event.target.reset();
 }
 
-
+function errorHandler(msg) {
+    hideLoader();
+    loadMoreBtnVisibility();
+    gallery.innerHTML = '';
+    iziToast.error({
+      backgroundColor: 'red',
+      icon: false,
+      progressBar: false,
+      close: false,
+      position: 'topRight',
+      message: msg,
+    });
+};
 
 function showLoader() {
   loader.classList.remove('is-hidden');
-}
+};
 
 function hideLoader() {
   loader.classList.add('is-hidden');
-}
+};
 
 function loadMoreBtnVisibility() {
   if (currentPage < totalPages) {
@@ -104,18 +89,23 @@ function loadMoreBtnVisibility() {
   } else {
     loadMore.classList.add('is-hidden');
   }
-}
+};
 
 async function onLoadMoreClick() {
   currentPage += 1;
-  const data = await getImages(userRequestStr, currentPage);
-  const markup = imagesRender(data.hits);
-  gallery.insertAdjacentHTML('beforeend', markup);
+  try {
+    const data = await getImages(userRequestStr, currentPage);
+    const markup = imagesRender(data.hits);
+    gallery.insertAdjacentHTML('beforeend', markup);
+    const galleryItemHeight = gallery.firstElementChild.getBoundingClientRect().height;
+    window.scrollBy({ top: galleryItemHeight * 2, behavior: 'smooth' });
+  }
+  catch (error) {
+      errorHandler('Something went wrong during your request. Please, try again later!')
+      console.log(error);
+  };
 
-  const galleryItemHeight = gallery.firstElementChild.getBoundingClientRect().height;
-  window.scrollBy({ top: galleryItemHeight * 2, behavior: 'smooth' });
-
-  if (currentPage >= totalPages) { 
+  if (currentPage >= totalPages) {
     iziToast.error({
         backgroundColor: 'white',
         icon: false,
@@ -125,7 +115,8 @@ async function onLoadMoreClick() {
         message:
           "We're sorry, but you've reached the end of search results.",
       });
-  }
+  };
+
   loadMoreBtnVisibility();
   lightbox.refresh();
 }
